@@ -87,7 +87,7 @@
 			id="amount" name="amount" value="${paging.cri.amount }">
 	</form>
 	
-	--------쿠폰 다운로드 영역 ----------<br>
+	--------1. 쿠폰 다운로드 영역 ----------<br>
 	<input type="button" value="쿠폰 다운로드" onclick="">
 	<input type="button" value="쿠폰 다운로드" onclick="">
 	<input type="button" value="쿠폰 다운로드" onclick="">
