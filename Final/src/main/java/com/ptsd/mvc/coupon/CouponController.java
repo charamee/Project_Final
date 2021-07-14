@@ -1,37 +1,139 @@
 package com.ptsd.mvc.coupon;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.RequestMapping;
+
+import com.ptsd.mvc.notice.NoticeDto;
+import com.ptsd.mvc.user.UserBiz;
 
 @Controller
 public class CouponController {
 
-	@Autowired
+	@Autowired // ì¿ í° ë‹¤ìš´ë¡œë“œ biz
 	private CouponBiz biz;
+
+	@Autowired // ì¿ í° ìƒì„± biz
+	private MakeCouponBiz couponbiz;
 	
-	//°ü¸®ÀÚ°¡ µî·ÏÇÑ ÄíÆù ¸®½ºÆ®¸¦ º¸¿©ÁØ´Ù 
+	@Autowired
+	private UserBiz userbiz;
+
+	//Admin
+	//ê´€ë¦¬ì í˜ì´ì§€ì—ì„œ ì¿ í° í˜ì´ì§€ë¡œ ì´ë™ -> ë¦¬ìŠ¤íŠ¸ ë³´ì—¬ì£¼ê¸°
+	@RequestMapping("/coupon.do")
+	public String createCoupon(Model model) {
+		
+		List<MakeCouponDto> list = couponbiz.selectList();
+		
+		model.addAttribute("list", list);
+		return "couponlist";
+	}
+	
+	// ê´€ë¦¬ìê°€ ì¿ í°ì„ ë§Œë“¤ì—ˆì„ ë•Œ
+	// ê´€ë¦¬ìí˜ì´ì§€ì—ì„œ ì¿ í°ìƒì„±í˜ì´ì§€ ì´ë™
+	@RequestMapping("makecoupon.do")
+	public String makeCoupon() {
+		return "createcoupon";
+	}
+	
+	@RequestMapping("couponselect.do")
+	public String selectOne(Model model, int makeseq) {
+		model.addAttribute("dto", couponbiz.selectOne(makeseq));
+		return "coupondetail";
+	}
+	
+	@RequestMapping("/couponupdateform.do")
+	public String updateForm(Model model, int makeseq) {
+		
+		model.addAttribute("dto", couponbiz.selectOne(makeseq));
+		
+		return "couponupdate";
+	}
+	
+	@RequestMapping("/couponupdateres.do")
+	public String updateRes(MakeCouponDto dto) {
+		
+		if (couponbiz.update(dto) > 0) {
+			return "redirect:couponselect.do?makeseq=" + dto.getMakeseq();
+		}
+		
+		return "redirect:couponupdateform.do";
+	}
+	
+	@RequestMapping("/coupondelete.do")
+	public String delete(Model model, int makeseq) {
+		
+		if (couponbiz.delete(makeseq) > 0) {
+			return "redirect:coupon.do";
+		}
+		
+		return "redirect:couponselect.do";
+	}
+
+	
+
+	// ê´€ë¦¬ìê°€ ì¿ í° ìƒì„± -> ìƒì„±í›„ ê´€ë¦¬ì main 
+	@RequestMapping("createcoupon.do")
+	public String createCoupon(int discount, Model model, MakeCouponDto dto) {
+		model.addAttribute("discount", discount);
+		if (couponbiz.insert(dto) > 0) {
+			return "redirect:admin.do";
+		}
+		System.out.println(discount);
+		return "couponinsert";
+	}
+
+	// user
+	// ë‹¤ìš´ë¡œë“œ ì¿ í°
+	@RequestMapping("downloadcoupon.do")
+	public String downloadcoupon(CouponDto dto) {
+
+		if (biz.insert(dto) > 0) {
+			return "redirect:mypage.do?userseq="+dto.getUserseq();
+		}
+
+		return "mypage";
+	}
+
+	// ë‚´ ì¿ í°í•¨ userë³„ ë³´ìœ  ì¿ í° ë¦¬ìŠ¤íŠ¸
+	@RequestMapping("mycoupon.do")
 	public String selectList(Model model) {
 		model.addAttribute("list", biz.selectList());
-		return "";
+		return "mycoupon";
 	}
-	
-	//°ü¸®ÀÚ·Î ·Î±×ÀÎÇßÀ» °æ¿ì, ÄíÆù»ı¼ºÇÏ´Â ÄÚµå (ÄíÆù¹øÈ£´Â ¾È»ı±ä´Ù)  
-	// °ü¸®ÀÚ°¡ ÄíÆù »ı¼º½Ã¿¡´Â html ÄÚµå·Î ¹öÆ°¸¸ »ı¼ºµÇ°Ô ±¸ÇöÇÑ´Ù. 
-	
-	
-	public String insertForm() {
-		return "";
-	}
-	
-	public String insertRes(CouponDto dto) {
-		if(biz.insert(dto)>0) {
-			return "";
+
+	// ìŠ¤ì¼€ì¤„ì— ë§ê²Œ ìë™ ì‚­ì œ
+	@Scheduled(cron = "0 0 02 * * ?") //ë§¤ì¼ ìƒˆë²½ë‘ì‹œì— ì‹¤í–‰ 
+	public void delete() {
+
+		List<CouponDto> list = biz.selectList(); //ì¿ í°ë¦¬ìŠ¤íŠ¸ ë¶ˆëŸ¬ì˜¤ê¸° 
+
+		DateFormat sdFormat = new SimpleDateFormat("yyyy-MM-dd");
+		Date nowDate = new Date(); 
+		String today = sdFormat.format(nowDate);//í˜„ì¬ë‚ ì§œ
+		for (CouponDto couponDto : list) {
+			String endday = couponDto.getEndday(); // ì¿ í°ì˜ ì¢…ë£Œë‚ ì§œ
+			if (today.equals(endday)) { //í˜„ì¬ ë‚ ì§œì™€ ì¿ í° ì¢…ë£Œë‚ ì§œê°€ ê°™ë‹¤ë©´ ì‚­ì œí• ê²ƒ 
+
+				if (biz.DailyDelete(endday) > 0) {
+					biz.DailyDelete(endday);
+				}
+			}
+
 		}
-		return "";
 	}
 	
-	public String updateForm(Model model, )
 	
+
 	
+
 }

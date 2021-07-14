@@ -7,9 +7,9 @@ public interface CouponDao {
 	String NAMESPACE = "coupon.";
 	
 	public List<CouponDto> selectList(); 
-	
+	public CouponDto selectOne(int couponseq);
 	public int insert(CouponDto dto);
 	public int update(CouponDto dto);
-	public int delete(String couponno);
+	public int DailyDelete(String endday);
 
 }

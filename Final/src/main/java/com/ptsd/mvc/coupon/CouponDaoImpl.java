@@ -26,6 +26,20 @@ public class CouponDaoImpl implements CouponDao {
 		}
 		return list;
 	}
+	
+	@Override
+	public CouponDto selectOne(int couponseq) {
+		
+		CouponDto dto = null; 
+		
+		try {
+			dto = sqlSession.selectOne(NAMESPACE + "selectOne",couponseq);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		return dto;
+	}
 
 	@Override
 	public int insert(CouponDto dto) {
@@ -52,13 +66,23 @@ public class CouponDaoImpl implements CouponDao {
 		return res;
 	}
 
+
 	@Override
-	public int delete(String couponno) {
-		
+	public int DailyDelete(String endday) {
 		int res = 0 ; 
-		
-		res = sqlSession.delete(NAMESPACE+"delete",couponno);
+		try {
+			res= sqlSession.delete(NAMESPACE+"dailydelete",endday); 
+				
+				
+			
+		} catch (Exception e) {
+			
+			e.printStackTrace();
+			
+		}
 		return res;
 	}
+
+	
 
 }
