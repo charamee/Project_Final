@@ -5,4 +5,6 @@
 ### `Activity List`
 - ADD : 파일/디렉토리 추가
 - MOD : 파일/디렉토리 수정
-- DEL : 파일/디렉토리 삭제
+- DEL : 파일/디렉토리 삭제!
+- [화면 캡처 2021-07-14 021549](https://user-images.githubusercontent.com/79408523/125649317-e853215b-c70d-4cd4-9328-bfbc24d41b73.png)
+
