@@ -4,7 +4,10 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>PTSD / 지도</title>
+	<link href="resources/img/favicon.png" rel="shortcut icon">
 </head>
 
 <script type="text/javascript"
@@ -66,7 +69,7 @@ window.onload = function() {
 	
 </script>
 <body>
-
+<%@include file="./common.jsp" %>
 	<div id="map" style="width: 500px; height: 400px;"></div>
 </body>
 </html>

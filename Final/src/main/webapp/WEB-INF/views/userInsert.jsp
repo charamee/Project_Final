@@ -8,17 +8,167 @@ response.setContentType("text/html; charset=UTF-8");
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
-<script type="text/javascript"
-	src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>PTSD / 회원가입</title>
+	<link href="resources/img/favicon.png" rel="shortcut icon">
+</head>
+<style type="text/css">
+
+	#table{
+		position:static;
+		top: 200px;
+	}
+
+</style>
+<body>
+<%@include file="./common.jsp" %>
+<div class="border border-danger rounded m-3">
+	<form action="userInsertres.do" method="post">
+		<table id="table" class="table table-borderless m-3" style="width:60em;">
+			<tr>
+				<th>이름</th>
+				<td>
+					<input class="form-control" type="text" name="name" id="username" placeholder="이름을 적어주세요" onkeyup="nameChk();">
+					<input type="hidden" id="Chk7" value="false">
+				</td>
+			</tr>
+			<tr>
+				<th>아이디</th>
+				<td>
+					<input class="form-control" style="ime-mode: disabled" type="text" name="userid" id="userid" placeholder="영어와 숫자만 사용가능하고 4~13자로 만들어주세요">
+					<input type="hidden" id="Chk1" value="false">
+				</td>
+			</tr>
+			<tr>
+				<td colspan="2" align="center" id="idChkres"></td>
+			</tr>
+			<tr>
+				<th>비밀번호</th>
+				<td>
+					<input class="form-control" type="password" name="userpw" id="pw1" placeholder="비밀번호를 적어주세요" onkeyup="checkPwd1();">
+					<input type="hidden" id="Chk2" value="false">	
+				</td>
+			</tr>
+			<tr>
+				<td colspan="2" align="center" id="checkPwd1"></td>
+			</tr>
+			<tr>
+				<th>비밀번호 확인</th>
+				<td>
+					<input class="form-control" type="password" id="pw2" placeholder="비밀번호를 확인해주세요" onkeyup="checkPwd2();">
+					<input type="hidden" id="Chk3" value="false">
+				</td>
+			</tr>
+
+			<tr>
+				<td colspan="2" align="center" id="checkPwd2"></td>
+			</tr>
+		
+			<tr>
+				<th>EMAIL</th>
+				<td>
+				  <div class="row">
+				  	<input type="hidden" name="email" id="email">
+				    <div class="col">
+				      <input class="form-control" type="text" name="femail" id="femail" style="ime-mode: disabled" placeholder="이메일을 적어주세요">
+				      <input type="button" class="btn btn-secondary" id="emailChkBtn" value="이메일 중복 확인">
+				    </div>
+				    <span>@</span>
+				    <div class="col">
+				      <input class="form-control" id="textEmail" placeholder="이메일을 선택하세요" readonly="readonly"> 
+					<select class="form-control" name="bemail" id="bemail">
+						<option value="" disabled selected>이메일을 선택해주세요.</option> 
+						<option value="naver.com">naver.com</option> 
+						<option value="hanmail.net">hanmail.net</option> 
+						<option value="hotmail.com">hotmail.com</option> 
+						<option value="nate.com">nate.com</option> 
+						<option value="gmail.com">gmail.com</option>
+						<option value="directly">직접입력</option>  
+					</select>
+				    </div>
+				  </div>
+				  
+				</td>
+			</tr>
+			<tr>
+				
+				<td colspan="2" align="center" id="emailChk"></td>
+			</tr>
+			<tr>
+				<th>인증 번호 확인</th>
+				<td>
+					<input class="form-control" type="text" id="prooftext" placeholder="이메일로 보낸 인증번호를 입력해주세요">
+					<input type="hidden" id="proofBtn" value="인증번호 발송">
+					<input type="hidden" id="Chk4" value="false">
+				</td>
+			</tr>
+			<tr>
+				<td colspan="2" align="center" id="proofChk"></td>
+			</tr>
+			
+			<tr>
+				<th>핸드폰 번호</th>
+				<td>
+					<input class="form-control" type="text" name="phone" id="phone" placeholder="숫자만 입력하세요" style="ime-mode: disabled">
+					<input type="hidden" id="Chk5" value="false">
+					<input type="hidden" id="Chk6" value="false">
+				</td>
+					
+			</tr>
+			<tr>
+				<td colspan="2" align="center" id="phoneChk"></td>
+			</tr>
+			<tr>
+				<th>주소</th>
+				<td><input class="form-control" type="text" name="address"
+					id="address" class="form-control" readonly="readonly"
+					placeholder="주소를 입력하려면 여기를 클릭하세요" onclick="goPopup();">
+				</td>
+			</tr>
+			<tr>
+				<td id="submitBtn" colspan="2" align="center" >
+					<input type="button" class="btn btn-danger"  value="회원가입" disabled="disabled">
+				</td>
+			</tr>
+			<tr>
+				<td id="submitRes" colspan="2" align="center">
+					<input type="submit" class="btn btn-danger"  value="회원가입">
+				</td>
+			</tr>
+			<tr id="notice">
+				<th colspan="2" align="center">모든 빈칸을 채우시고 밑에 둠게임을 성공하시면 회원가입 버튼이 활성화됩니다.</th>
+			</tr>
+			<tr>
+				<td colspan="2" align="center"><input type="button" class="btn btn-dark" value="취소" onclick="location.href='loginform.do'" /></td>
+			</tr>
+		</table>
+	</form>
+	
+	<div align="center"><script src="doomcaptcha/script.js?version=17" countdown="on" label="Captcha" enemies="4"></script></div></div>
+</body>
 <script type="text/javascript">
+	
 	
 	
 	$(function() {
 		$("#idChkres").hide();
 		$("#checkPwd1").hide();
 		$("#checkPwd2").hide();
+		$("#submitRes").hide();
 	});
+	
+	function nameChk(){
+		var name = $("#username").val().trim();
+		
+		if(name != null || name != ""){
+			$("#Chk7").val('true');	
+		} else{
+			$("#Chk7").val('false');
+		}
+		
+	}
+	
 	// 비밀번호
 	
 	function checkPwd1(){
@@ -39,6 +189,7 @@ response.setContentType("text/html; charset=UTF-8");
 			$("#checkPwd1").hide();
 			$("#Chk2").val('true');
 			submitChk();
+			console.log(pw)
 		}
 		
 	}
@@ -62,108 +213,17 @@ response.setContentType("text/html; charset=UTF-8");
 			document.getElementById('checkPwd2').innerHTML = "암호가 일치합니다.";
 			$("#Chk3").val('true');
 			submitChk();
-			setTimeout(function() {
-				$("#checkPwd2").hide();
-				}, 3000);
+			console.log(pw2)
+			
 		}
 
 	}
 	
 	
 </script>
-
-</head>
-<body>
-
-	<form action="userInsertres.do" method="post">
-		<table>
-			<tr>
-				<th>아이디</th>
-				<td>
-					<input style="ime-mode: disabled" type="text" name="userid" id="userid" placeholder="4~13자만 가능합니다">
-					<input type="hidden" id="Chk1" value="false">
-				</td>
-			</tr>
-			<tr>
-				<td colspan="2" align="center" id="idChkres"></td>
-			</tr>
-			<tr>
-				<th>비밀번호</th>
-				<td>
-					<input type="password" name="userpw" id="pw1" placeholder="비밀번호를 적어주세요" onkeyup="checkPwd1();">
-					<input type="hidden" id="Chk2" value="false">	
-				</td>
-			</tr>
-			<tr>
-				<td colspan="2" align="center" id="checkPwd1"></td>
-			</tr>
-			<tr>
-				<th>비밀번호 확인</th>
-				<td>
-					<input type="password" id="pw2" placeholder="비밀번호를 확인해주세요" onkeyup="checkPwd2();">
-					<input type="hidden" id="Chk3" value="false">
-				</td>
-			</tr>
-
-			<tr>
-				<td colspan="2" align="center" id="checkPwd2"></td>
-			</tr>
-			
-			<tr>
-
-			</tr>
-			<tr>
-				<th>EMAIL</th>
-				<td>
-					<input type="text" name="femail" id="femail" style="ime-mode: disabled" placeholder="이메일을 적어주세요">@
-					 <input id="textEmail" placeholder="이메일을 선택하세요" readonly="readonly"> 
-					<select name="bemail" id="bemail">
-						<option value="" disabled selected>이메일을 선택해주세요.</option> 
-						<option value="naver.com">naver.com</option> 
-						<option value="hanmail.net">hanmail.net</option> 
-						<option value="hotmail.com">hotmail.com</option> 
-						<option value="nate.com">nate.com</option> 
-						<option value="gmail.com">gmail.com</option>
-						<option value="directly">직접입력</option>  
-					</select>
-					<input type="hidden" id="Chk4" value="false">
-				</td>
-			</tr>
-			<tr>
-				<td colspan="2" align="center" id="emailChk"></td>
-			</tr>
-			
-			<tr>
-				<th>핸드폰 번호</th>
-				<td>
-					<input type="text" name="phone" id="phone" placeholder="숫자만 입력하세요" style="ime-mode: disabled">
-					<input type="hidden" id="Chk5" value="false">
-				</td>
-					
-			</tr>
-			<tr>
-				<td colspan="2" align="center" id="phoneChk"></td>
-			</tr>
-			<tr>
-				<th>주소</th>
-				<td><input style="width: 300px;" type="text" name="address"
-					id="address" class="form-control" readonly="readonly"
-					placeholder="주소를 입력하려면 여기를 클릭하세요" onclick="goPopup();">
-				</td>
-			</tr>
-			<tr>
-				<td colspan="2" align="right"><input type="button" value="취소" onclick="location.href='loginform.do'" /></td>
-			</tr>
-			<tr>
-				<td colspan="2" align="center"><input type="submit" id="submitRes" value="회원가입" disabled="disabled"></td>
-			</tr>
-		</table>
-	</form>
-
-</body>
 <script type="text/javascript">
 
-$("#userid").blur(function(){
+$("#userid").keyup(function(){
 	var userid = $("#userid").val().trim();
 	console.log(userid)
 	if (userid == null || userid == "") {
@@ -186,6 +246,7 @@ $("#userid").blur(function(){
 						$("#idChkres").css("color", "blue");
 						$("#Chk1").val('true');
 						submitChk();
+						console.log(userid)
 						
 					} else {
 						$("#idChkres").html('이미 존재하는 ID입니다.');
@@ -217,14 +278,7 @@ $("#userid").blur(function(){
 		$(this).val(inputVal.replace(/[^a-z0-9]/gi,''));
 	}); 
 	
-	$("#femail").keyup(function(event){
-		// 좌우 방향키, 백스페이스, 딜리트, 탭키에 대한 예외
-		var inputVal = $(this).val();
-		if(event.keyCode == 8 || event.keyCode == 9 || event.keyCode == 37 || event.keyCode == 39 || event.keyCode ==  46){ 
-			return;
-		}
-		$(this).val(inputVal.replace(/[^a-z0-9]/gi,''));
-	}); 
+
 	
 	$(function() {
         $('#bemail').change(function() {
@@ -239,13 +293,17 @@ $("#userid").blur(function(){
         })
     });
 	
-	$("#bemail").blur(function(){
+
+	
+	$("#emailChkBtn").click(function(){
 		var femail = $("#femail").val();
 		var femailChk = femail + "@null";
-		var bemail = $("#bemail").val();
+		var bemail = $("#bemail option:selected").val();
+		console.log(bemail);
+		var bemailChk = "null@"+ bemail;
 		var email = femail + "@" + bemail;
 		console.log(email)
-		if (email == null || email == "@null" ||email == femailChk) {
+		if (email == null || email == "@null" ||email == femailChk || email == bemailChk || email == "@") {
 			$("#emailChk").show();
 			$("#emailChk").html('email을 입력해 주세요.');
 			$("#emailChk").css("color", "red");
@@ -258,17 +316,21 @@ $("#userid").blur(function(){
 				dataType : "text",
 				success : function(check) {
 					console.log(check)
-					$("#addressChkres").show();
+					$("#emailChk").show();
 					if (check == "false") {
+						$("#email").val(email);
+						console.log("이메일")
+						console.log(email)
 						$("#emailChk").html('사용 가능한 email입니다.');
 						$("#emailChk").css("color", "blue");
-						$("#Chk4").val('true');
-						submitChk();
+						$("#femail").attr('readonly', true);
+						$("#bemail").attr('disabled', true);
+						$("#emailChkBtn").attr('type', 'hidden');
+						$("#proofBtn").attr('type', 'button');
+						
 					} else {
 						$("#emailChk").html('이미 존재하는 email입니다.');
 						$("#emailChk").css("color", "red");
-						$("#Chk4").val('false');
-						submitChk();
 					}
 				},
 				error : function() {
@@ -278,14 +340,64 @@ $("#userid").blur(function(){
 		}
 
 	});
+	
+	$("#proofBtn").click(function(){
+		var femail = $("#femail").val();
+		var bemail = $("#bemail").val();
+		var email = femail + "@" + bemail;
+		$("#proofBtn").val("인증번호 재발송");
+		var key;
+		var bool = true;
+		
+		if (bool) {
+			$.ajax({
+				type : "post",
+				url : "proofChk.do?email=",
+				data : email,
+				contentType : "application/text",
+				dataType : "text",
+				success : function(authCodes) {
+					console.log(authCodes)
+					key = authCodes;
+					bool = false;
+				},
+				error : function() {
+					alert("이메일 인증 통신 실패");
+				}
+			});
+			$("#prooftext").keyup(function() {
+				var proof = $("#prooftext").val();
+				if(proof.length == 6){
+					if(proof == key){
+						$("#proofChk").html('인증완료');
+						$("#proofChk").css("color", "blue");
+						$("#proofBtn").attr('type', 'hidden');
+						$("#prooftext").attr('readonly', true);
+						$("#Chk4").val('true');
+						
+						submitChk();
+						console.log(proof)
+						
+					} else{
+						$("#proofChk").html('인증번호를 다시 확인해주시거나 재발송을 눌러주세요.');
+						event.preventDefault();
+					}
+				}
+				
+			});
+		} else{
+			event.preventDefault();
+		}
 
+	});
+	
 	
 	$("#phone").keyup(function(event){
 	    var inputVal = $(this).val();
 	    $(this).val(inputVal.replace(/[^0-9]/gi,''));
 	});
 	
-	$("#phone").blur(function(){
+	$("#phone").keyup(function(){
 		var phone = $("#phone").val();
 		var fphone = phone.substring(0,3);
 		console.log(phone)
@@ -302,7 +414,13 @@ $("#userid").blur(function(){
 			$("#phoneChk").css("color", "red");
 			$("#Chk5").val('false');
 			submitChk();
-		} else {
+		} else if(phone.length < 11 || phone.length > 11 ) {
+			$("#phoneChk").show();
+			$("#phoneChk").html('핸드폰 번호 11자리까지 입력해 주세요.');
+			$("#phoneChk").css("color", "red");
+			$("#Chk5").val('false');
+			submitChk();
+		} else{
 			$.ajax({
 				type : "post",
 				url : "ajaxphoneChk.do?phone=",
@@ -317,6 +435,8 @@ $("#userid").blur(function(){
 						$("#phoneChk").css("color", "blue");
 						$("#Chk5").val('true');
 						submitChk();
+						console.log(phone)
+						
 					} else if(check == "true") {
 						$("#phoneChk").html('이미 존재하는 번호입니다.');
 						$("#phoneChk").css("color", "red");
@@ -353,12 +473,24 @@ $("#userid").blur(function(){
 	
 	function submitChk() {
 		
-		if($("#Chk1").val() == 'true' && $("#Chk2").val() == 'true' && $("#Chk3").val() == 'true' && $("#Chk4").val() == 'true' && $("#Chk5").val() == 'true'){
-			$("#submitRes").attr("disabled", false);
+		if($("#Chk1").val() == 'true' 
+				&& $("#Chk2").val() == 'true' 
+				&& $("#Chk3").val() == 'true' 
+				&& $("#Chk4").val() == 'true' 
+				&& $("#Chk5").val() == 'true'
+				&& $("#Chk6").val() == 'true' 
+				&& $("#Chk7").val() == 'true'){
+			$("#submitBtn").hide();
+			$("#submitRes").show();
+			$("#notice").hide();
 		} else{
-			$("#submitRes").attr("disabled", true);
+			$("#submitBtn").show();
+			$("#submitRes").hide();
+			$("#notice").show();
 		}
 	}
+	
+
 	
 </script>
 </html>
