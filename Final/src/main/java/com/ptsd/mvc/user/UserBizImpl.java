@@ -41,11 +41,7 @@ public class UserBizImpl implements UserBiz {
 		return dao.updateUser(dto);
 	}
 
-	@Override
-	public int deleteUser(int userseq) {
-		// TODO Auto-generated method stub
-		return dao.deleteUser(userseq);
-	}
+	
 
 	@Override
 	public String idCheck(String userid) {
@@ -58,22 +54,55 @@ public class UserBizImpl implements UserBiz {
 		return dao.emailCheck(email);
 	}
 
-	@Override
-	public UserDto nicnameCheck(String nickname) {
-		// TODO Auto-generated method stub
-		return dao.nicnameCheck(nickname);
-	}
+	
 
-	@Override
-	public List<UserDto> userSearch(String userid) {
-		// TODO Auto-generated method stub
-		return dao.userSearch(userid);
-	}
 	
 	@Override
 	public String phoneCheck(String phone) {
 		
 		return dao.phoneCheck(phone);
 	}
-
+	
+	@Override
+	public UserDto idFind(UserDto dto) {
+		
+		return dao.idFind(dto);
+	}
+	
+	@Override
+	public UserDto pwFind(UserDto dto) {
+		
+		return dao.pwFind(dto);
+	}
+	
+	@Override
+	public int pwUpdate(UserDto pwUpdate) {
+		
+		return dao.pwUpdate(pwUpdate);
+	}
+	
+	@Override
+	public UserDto snsCheck(UserDto dto) {
+		
+		return dao.snsCheck(dto);
+	}
+	
+	@Override
+	public UserDto mypage(int userseq) {
+		
+		return dao.mypage(userseq);
+	}
+	
+	@Override
+	public int delete(int userseq) {
+		
+		return dao.delete(userseq);
+	}
+	
+	@Override
+	public List<UserDto> usersearch(String name){
+		
+		return dao.usersearch(name);
+	}
+	
 }
